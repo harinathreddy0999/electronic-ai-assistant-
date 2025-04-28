@@ -1,0 +1,386 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Remove logo and card styles */
+/* 
+.logo { ... } 
+.logo:hover { ... } 
+.logo.react:hover { ... } 
+@keyframes logo-spin { ... } 
+@media (prefers-reduced-motion: no-preference) { ... } 
+.card { ... } 
+.read-the-docs { ... } 
+*/
+
+/* Add custom styles for App components later if needed */
+
+.App {
+    padding: 1rem 0; /* Vertical padding for the whole app */
+}
+
+/* Layout */
+.session-active {
+    display: flex;
+    flex-direction: column; /* Stack columns on smaller screens */
+    gap: 2rem;
+}
+
+@media (min-width: 900px) { /* Apply side-by-side layout on wider screens */
+    .session-active {
+        flex-direction: row;
+    }
+    .left-column {
+        flex: 1; /* Takes up half the space */
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Space between sections */
+    }
+    .right-column {
+        flex: 1; /* Takes up half the space */
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Chat Container */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    /* height: calc(100vh - 200px); Max height? Adjust as needed */
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    overflow: hidden; /* Contain children */
+    background-color: var(--chat-bg, #f9f9f9);
+}
+
+/* Messages Area */
+.messages-area {
+    flex-grow: 1; /* Take available space */
+    height: 450px; /* Fixed height for scrolling */
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.message-row {
+    display: flex;
+}
+
+.message-row.message-user {
+    justify-content: flex-end; /* Align user messages right */
+}
+
+.message-row.message-agent {
+    justify-content: flex-start; /* Align agent messages left */
+}
+.message-row.message-system {
+    justify-content: center; /* Center system messages */
+    font-size: 0.85em;
+    color: var(--text-secondary, #666);
+}
+
+.message-bubble {
+    padding: 0.6rem 1rem;
+    border-radius: 18px; /* Bubble shape */
+    max-width: 80%;
+    word-wrap: break-word; /* Wrap long words */
+    line-height: 1.4;
+}
+
+.message-bubble-user {
+    background-color: var(--user-bubble-bg, #cce5ff);
+    color: var(--user-bubble-text, #004085);
+    border-bottom-right-radius: 4px; /* Flat corner */
+}
+
+.message-bubble-agent {
+    background-color: var(--agent-bubble-bg, #e2e3e5);
+    color: var(--agent-bubble-text, #383d41);
+    border-bottom-left-radius: 4px; /* Flat corner */
+}
+
+.message-bubble-system {
+    background-color: var(--system-bubble-bg, #f8d7da);
+    color: var(--system-bubble-text, #721c24);
+    text-align: center;
+    max-width: 90%;
+}
+
+/* Input Area */
+.input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-color, #ccc);
+    background-color: var(--input-bg, #fff);
+}
+
+.chat-input {
+    flex-grow: 1;
+    resize: none;
+    border-radius: 18px; /* Match bubble radius */
+    border: 1px solid var(--border-color, #ccc);
+    padding: 0.6rem 1rem;
+    font-family: inherit;
+    font-size: 1em;
+    line-height: 1.4;
+}
+.chat-input:focus {
+    outline: none;
+    border-color: #646cff;
+    box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+}
+
+.mic-button, .send-button {
+    padding: 0.5rem;
+    min-width: 50px; /* Ensure consistent size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.mic-button {
+    font-size: 1.3em; /* Make mic icon larger */
+    background-color: var(--mic-idle-bg, #f0f0f0);
+    border: 1px solid var(--border-color, #ccc);
+}
+.mic-button:hover {
+    background-color: var(--mic-hover-bg, #e0e0e0);
+}
+.mic-button[title="Stop Listening"] { /* Style when listening */
+     background-color: var(--mic-active-bg, #ffdddd);
+}
+
+/* Video Area */
+.video-display {
+    border: 1px solid var(--border-color, #ccc);
+    background: var(--video-bg, #eee);
+    min-height: 300px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden; /* Clip video corners */
+}
+.video-display video {
+    display: block; /* Remove extra space below video */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area */
+}
+.video-display p { /* "Video is off" text */
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary, #666);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Guide Status Indicator */
+.guide-status-indicator {
+    background-color: var(--status-warn-bg, #fff3cd);
+    color: var(--status-warn-text, #856404);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem; /* Space below indicator */
+    text-align: center;
+    font-weight: 500;
+}
+
+/* CV Analysis Indicator */
+.cv-analysis-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+}
+.cv-analysis-indicator .spinner {
+     width: 0.8em;
+     height: 0.8em;
+     border-width: 2px;
+     margin-left: 0; /* Remove default spinner margin */
+}
+
+/* Status Sections */
+.location-finder, .status-section, .webrtc-status, .cv-results-display {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color-light, #eee);
+}
+
+.location-finder h4, .status-section h4, .webrtc-status h4, .cv-results-display strong {
+    margin-bottom: 0.5rem;
+}
+
+.locations-list {
+    margin-top: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+.locations-list ul {
+    list-style: none;
+    padding-left: 0;
+}
+.locations-list li {
+    border-bottom: 1px solid var(--border-color-light, #eee);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.locations-list p {
+    margin: 0.2rem 0;
+    color: var(--text-secondary, #666);
+}
+
+.status-section > div, .webrtc-status > p, .cv-results-display > ul {
+    margin-bottom: 0.3rem;
+    font-size: 0.9em;
+}
+.status-section span:last-child, .webrtc-status span {
+     font-style: italic;
+     color: var(--text-secondary, #666);
+     margin-left: 0.5em;
+}
+.mic-status span:last-child[style*="color: green"], 
+.audio-output span:last-child[style*="color: blue"] { /* Use more specific selectors if needed */
+    color: var(--status-active, #28a745); /* Green for active */
+}
+
+.cv-results-display ul {
+     margin: 0.2rem 0;
+     padding-left: 1.2rem;
+     list-style: disc;
+}
+
+.video-note {
+    font-size: 0.8em;
+    color: var(--text-secondary, #666);
+    margin-top: 0.5rem;
+}
+
+/* Error Text */
+.error-text {
+    color: var(--error-text, #dc3545); /* Red for errors */
+    margin-top: 1rem;
+}
+
+.error-text.small {
+    font-size: 0.85em;
+    margin-top: 0.2rem;
+}
+
+/* Spinner Animation */
+.spinner {
+  border: 3px solid var(--spinner-bg, #f3f3f3); /* Light grey */
+  border-top: 3px solid var(--spinner-color, #3498db); /* Blue */
+  border-radius: 50%;
+  width: 1em; /* Size relative to font */
+  height: 1em;
+  animation: spin 1s linear infinite;
+  display: inline-block; /* Keep it inline */
+  vertical-align: middle;
+  margin-left: 0.5em;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Identified Device Display */
+.identified-device-display {
+    background-color: var(--info-bg, #d1ecf1);
+    color: var(--info-text, #0c5460);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem; /* Space below indicator */
+    border: 1px solid var(--info-border, #bee5eb);
+    font-size: 0.9em;
+}
+.identified-device-display .source-tag {
+    font-size: 0.85em;
+    margin-left: 0.5em;
+    opacity: 0.8;
+}
+
+/* Add color variables for light/dark mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --border-color: #ccc;
+    --border-color-light: #eee;
+    --chat-bg: #ffffff;
+    --input-bg: #f9f9f9;
+    --user-bubble-bg: #007bff;
+    --user-bubble-text: #ffffff;
+    --agent-bubble-bg: #e9ecef;
+    --agent-bubble-text: #212529;
+    --system-bubble-bg: #fff3cd;
+    --system-bubble-text: #856404;
+    --text-secondary: #6c757d;
+    --video-bg: #f0f0f0;
+    --mic-idle-bg: #f8f9fa;
+    --mic-hover-bg: #e9ecef;
+    --mic-active-bg: #f8d7da;
+    --status-active: #28a745;
+    --error-text: #dc3545;
+    --status-idle-bg: #e9ecef;
+    --status-active-bg: #d4edda;
+    --status-active-text: #155724;
+    --status-warn-bg: #fff3cd;
+    --status-warn-text: #856404;
+    --status-error-bg: #f8d7da;
+    --status-error-text: #721c24;
+    --spinner-bg: #e0e0e0;
+    --spinner-color: #007bff;
+    --info-bg: #e2f3f5;
+    --info-text: #31708f;
+    --info-border: #b8daff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-color: #444;
+    --border-color-light: #333;
+    --chat-bg: #2a2a2a;
+    --input-bg: #3a3a3a;
+    --user-bubble-bg: #007bff;
+    --user-bubble-text: #ffffff;
+    --agent-bubble-bg: #4a4a4a;
+    --agent-bubble-text: rgba(255, 255, 255, 0.87);
+    --system-bubble-bg: #543838;
+    --system-bubble-text: #f8d7da;
+    --text-secondary: #adb5bd;
+    --video-bg: #333;
+    --mic-idle-bg: #4a4a4a;
+    --mic-hover-bg: #5a5a5a;
+    --mic-active-bg: #723b47;
+    --status-active: #34d399;
+    --error-text: #f87171;
+    --status-idle-bg: #4a4a4a;
+    --status-active-bg: #2a4a3a; 
+    --status-active-text: #a6f0c6; 
+    --status-warn-bg: #545038; 
+    --status-warn-text: #ffeeba; 
+    --status-error-bg: #543838; 
+    --status-error-text: #f5c6cb; 
+    --spinner-bg: #555;
+    --spinner-color: #64a0ff;
+    --info-bg: #34495e;
+    --info-text: #aed6f1;
+    --info-border: #5dade2;
+  }
+}
